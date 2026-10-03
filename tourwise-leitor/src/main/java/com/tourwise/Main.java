@@ -12,7 +12,7 @@ public class Main {
 
 
         //definir caminho do arquivo
-        String arquivo = "meios-de-hospedagem-2-trimestre-2026.xlsx";
+        String arquivo = "tourwise-leitor/meios-de-hospedagem-2-trimestre-2026.xlsx";
 
         //ler o arquivo
         System.out.print("Iniciando leitura. | " + LocalDateTime.now().format(formatter));
