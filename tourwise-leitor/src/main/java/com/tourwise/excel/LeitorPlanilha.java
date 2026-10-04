@@ -1,5 +1,6 @@
 package com.tourwise;
 
+import com.tourwise.model.Hospedagem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -79,7 +80,10 @@ public class LeitorPlanilha {
     //converte numeros numeros
     private Integer inteiro(Row row, String coluna) {
         Cell c = celula(row, coluna);
-        if (c == null || c.getCellType() != CellType.NUMERIC) return null;
+        if (c == null || c.getCellType() != CellType.NUMERIC) {
+            return null;
+        };
+
         return (int) c.getNumericCellValue();
     }
 
