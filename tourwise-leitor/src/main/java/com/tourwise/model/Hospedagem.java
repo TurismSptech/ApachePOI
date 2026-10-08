@@ -1,4 +1,4 @@
-package com.tourwise;
+package com.tourwise.model;
 
 import java.time.LocalDate;
 
