@@ -30,7 +30,6 @@ public class Main {
 
         System.out.println(LocalDateTime.now().format(formatter) + " - Planilhas encontradas no BD: " + nomePlanilhasLidas.toString() + "\n");
 
-
         System.out.println(LocalDateTime.now().format(formatter) + " - Procurando novas planilhas em " + caminho + "\n");
 
         Boolean temPlanilhaNova = false;
@@ -54,7 +53,7 @@ public class Main {
 
                 System.out.println(LocalDateTime.now().format(formatter) + " - Inserção da planilha " + arquivo.getName() +" finalizada\n");
 
-                System.out.println(LocalDateTime.now().format(formatter) + " - Registrando no banco que a planilha já foi lida");
+                System.out.println(LocalDateTime.now().format(formatter) + " - Registrando no banco que a planilha já foi lida\n");
 
                 insert.gravarNomeDePlanilhaLida(arquivo.getName());
             }
