@@ -1,19 +1,15 @@
 package com.tourwise.database;
 
-import com.tourwise.model.Cnae;
-import com.tourwise.model.Hospedagem;
-import com.tourwise.model.Idioma;
-import com.tourwise.model.Localizacao;
+import com.tourwise.model.*;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class InsertData {
     private ConnectionFactory connectionFactory;
 
-    public InsertData(){
+    public InsertData() {
         this.connectionFactory = new ConnectionFactory();
     }
 
@@ -82,6 +78,26 @@ public class InsertData {
         //Add Endereço da Hospedagem
         template.update("INSERT INTO localizacao (endereco, municipio, uf, fk_hospedagem) VALUES (?,?,?,?)", h.getEndereco(), h.getMunicipio(), h.getUf(), fk_hosp);
 
+    }
+
+    public List<String> buscarPlanilhasLidas() {
+        JdbcTemplate template = connectionFactory.getJdbcTemplate();
+
+        List<String> nomePlanilhasLidas = new ArrayList<>();
+
+        List<Leitura> leituras = template.query("SELECT * FROM leitura;", new BeanPropertyRowMapper<>(Leitura.class));
+
+        for (Leitura leitura : leituras) {
+            nomePlanilhasLidas.add(leitura.getNome_arquivo());
+        }
+
+        return nomePlanilhasLidas;
+    }
+
+    public void gravarNomeDePlanilhaLida(String nome) {
+        JdbcTemplate template = connectionFactory.getJdbcTemplate();
+
+        template.update("INSERT INTO leitura (nome_arquivo) VALUES (?)", nome);
     }
 
 }
