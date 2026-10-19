@@ -51,14 +51,18 @@ public class Main {
                     insert.insertHosp(hospedagens.get(i));
                 }
 
-                System.out.println(LocalDateTime.now().format(formatter) + " - Inserção da planilha " + arquivo.getName() +" finalizada\n");
+                System.out.println(LocalDateTime.now().format(formatter) + " - Inserção da planilha " + arquivo.getName() + " finalizada\n");
 
                 System.out.println(LocalDateTime.now().format(formatter) + " - Registrando no banco que a planilha já foi lida\n");
+
+                System.out.println(LocalDateTime.now().format(formatter) + " - Verificando se há mais novas planilhas\n");
 
                 insert.gravarNomeDePlanilhaLida(arquivo.getName());
             }
         }
 
-        if (!temPlanilhaNova) System.out.println(LocalDateTime.now().format(formatter) + " - Nenhuma planilha nova encontrada");
+        System.out.println(LocalDateTime.now().format(formatter) + " - Nenhuma planilha nova encontrada");
     }
+
+
 }
