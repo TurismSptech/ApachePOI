@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,7 @@ public class LeitorPlanilha {
                 h.setWebsite(texto(row, "Website"));
                 h.setPorte(texto(row, "Porte"));
                 h.setTipoHospedagem(texto(row, "Tipo de Hospedagem"));
-                h.setDtAbertura(data(row, "Data de Abertura"));
+                h.setDtAbertura(data(row));
                 h.setUniHabit(inteiro(row, "Unidade Habitacionais"));
                 h.setLeitos(inteiro(row, "Leitos"));
                 h.setUniHabitAcess(inteiro(row, "UHs Acessíveis"));
@@ -55,6 +56,8 @@ public class LeitorPlanilha {
                 h.setUf(texto(row, "UF"));
                 h.setIdiomas(texto(row, "Idiomas"));
                 h.setCnaes(texto(row, "CNAE(S) relacionados à atividade"));
+                h.setValidade_certificado(dataHora(row));
+                h.setTelefone(texto(row, "Telefone Comercial"));
 
                 if (h.getCnpj() != null) {
                     lista.add(h);
@@ -88,11 +91,23 @@ public class LeitorPlanilha {
     }
 
     //converte data
-    private LocalDate data(Row row, String coluna) {
-        Cell c = celula(row, coluna);
+    private LocalDate data(Row row) {
+        Cell c = celula(row, "Data de Abertura");
         if (c == null || c.getCellType() != CellType.NUMERIC || !DateUtil.isCellDateFormatted(c)) {
             return null;
         }
         return c.getLocalDateTimeCellValue().toLocalDate();
     }
+
+    //converte data e hora
+    private LocalDateTime dataHora(Row row) {
+        Cell c = celula(row, "Validade do Certificado");
+
+        if (c == null || c.getCellType() != CellType.NUMERIC) {
+            return null;
+        }
+
+        return c.getLocalDateTimeCellValue().withNano(0);
+    }
+
 }

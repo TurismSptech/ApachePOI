@@ -1,6 +1,7 @@
 package com.tourwise.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Hospedagem {
     private String cnpj;
@@ -19,6 +20,8 @@ public class Hospedagem {
     private String uf;
     private String idiomas;
     private String cnaes;
+    private LocalDateTime validade_certificado;
+    private String telefone;
 
     public String getCnpj() {
         return cnpj;
@@ -146,6 +149,22 @@ public class Hospedagem {
 
     public void setCnaes(String cnaes) {
         this.cnaes = cnaes;
+    }
+
+    public LocalDateTime getValidade_certificado() {
+        return validade_certificado;
+    }
+
+    public void setValidade_certificado(LocalDateTime validade_certificado) {
+        this.validade_certificado = validade_certificado;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.tourwise.model.*;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class InsertData {
@@ -52,11 +53,11 @@ public class InsertData {
         }
 
         //Insert hospedagem
-        template.update("INSERT INTO hospedagem (cnpj, tipo_hospedagem, nome_fantasia, email_comercial, uni_habit, leitos, uni_habit_acess, leito_acess, dt_abertura, website, porte)" +
-                        "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+        template.update("INSERT INTO hospedagem (cnpj, tipo_hospedagem, nome_fantasia, email_comercial, uni_habit, leitos, uni_habit_acess, leito_acess, dt_abertura, website, porte, validade_certificado)" +
+                        "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                 h.getCnpj(), h.getTipoHospedagem(), h.getNomeFantasia(), h.getEmailComercial(), h.getUniHabit(),
                 h.getLeitos(), h.getUniHabit(), h.getLeitosAcess(), h.getDtAbertura(), h.getWebsite(),
-                h.getPorte()
+                h.getPorte(), h.getValidade_certificado()
         );
 
         Integer fk_hosp = template.queryForObject("SELECT MAX(id_hospedagem) FROM hospedagem", Integer.class);
@@ -73,6 +74,14 @@ public class InsertData {
             Integer fk_cnae = template.queryForObject("SELECT id_cnae FROM cnae WHERE codigo = ?", Integer.class, cnaesAtuais.get(i));
 
             template.update("INSERT INTO cnaes_hospedagem (fk_cnae, fk_hospedagem) VALUES (?,?)", fk_cnae, fk_hosp);
+        }
+
+        //Add Telefone da Hospedagem
+        if(h.getTelefone() != null){
+        template.update("INSERT INTO telefone (numero, fk_hospedagem) VALUES (?,?)",
+                h.getTelefone().replace("(" , "").replace(")", "").replace("-", "")
+                , fk_hosp);
+
         }
 
         //Add Endereço da Hospedagem
@@ -98,6 +107,26 @@ public class InsertData {
         JdbcTemplate template = connectionFactory.getJdbcTemplate();
 
         template.update("INSERT INTO leitura (nome_arquivo) VALUES (?)", nome);
+    }
+
+    public boolean temTodosAtributosPreenchidos(Hospedagem h) throws IllegalAccessException {
+        if (h == null) return false;
+
+        Field[] campos = h.getClass().getDeclaredFields();
+        for (Field campo : campos) {
+            // Torna acessíveis campos privados
+            campo.setAccessible(true);
+            Object valor = campo.get(h);
+
+            if (valor == null) {
+                return false;
+            }
+            // Se for String, verifica se está em branco
+            if (valor instanceof String && ((String) valor).trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
